@@ -1,7 +1,8 @@
-import { styled, Button } from '@mui/material';
+import { Button } from '@mui/material';
 
-const StyledButton = ({value}) => {
-    return <Button variant="contained" sx={{
+const StyledButton = ({value, click={}, sx={}}) => {
+    return <Button onClick={click} variant="contained" sx={{
+        ...sx,
         borderRadius: 20,
         paddingLeft: 7,
         paddingRight: 7,
