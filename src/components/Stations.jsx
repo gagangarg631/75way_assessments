@@ -7,6 +7,7 @@ import {
     ListItemAvatar,
     ListItemText,
     Typography,
+    Fade
 } from "@mui/material";
 import { Search, LocalGasStation } from "@mui/icons-material";
 import { allStations } from '../Services';
@@ -17,9 +18,12 @@ const Stations = () => {
     const [stations, setStations] = useState([]);
     const navigate = useNavigate();
 
+    const [showStations, setShowStations] = useState(false);
+
     const [storeStations, setStoreStations] = useState([]);
 
     useEffect(() => {
+        setTimeout(() => setShowStations(true), 500);
         async function loadData() {
             const st = await allStations();
             setStations(st.data);
@@ -56,11 +60,12 @@ const Stations = () => {
                         fullWidth
                         onChange={(el) => {
                             let value = el.target.value;
+                            
                             if (value === ""){
                                 setStations(storeStations);
                             }else{
                                 setStations(storeStations.filter(item => {
-                                    return item.name.startsWith(value);
+                                    return item.name.toLowerCase().startsWith(value.toLowerCase());
                                 }))
                             }
                         }}
@@ -71,6 +76,7 @@ const Stations = () => {
                         }}
                     />
                 </Box>
+                <Fade in={showStations}>
                 <List
                     sx={{
                         width: "100%",
@@ -98,6 +104,7 @@ const Stations = () => {
                         })
                     }
                 </List>
+                </Fade>
             </StyledBox>
         </Box>
     );
