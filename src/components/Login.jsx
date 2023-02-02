@@ -3,7 +3,6 @@ import { Box, Button, Input, Typography, styled } from '@mui/material';
 import { ArrowRightAlt, Lock, Email } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../Services';
-import StyledButton from './StyledButton';
 
 const StyledInput = styled(Box)({ 
   paddingLeft: 5, 
