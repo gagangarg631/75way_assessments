@@ -80,17 +80,22 @@ const Stations = () => {
                     }}
                 >
                     {
-                        stations.map((item, index) => (
-                            <ListItem key={ index } onClick={() => navigate('/details')}>
-                                <ListItemAvatar>
-                                    <LocalGasStation sx={{ color: "red" }} />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={ item.name.slice(0,1).toUpperCase() + item.name.slice(1) }
-                                    secondary={ item.pantone_value }
-                                />
-                            </ListItem>
-                        ))
+                        stations.map((item, index) => {
+
+                            item.name = item.name.slice(0,1).toUpperCase() + item.name.slice(1);
+
+                            return (
+                                <ListItem key={ index } onClick={() => navigate('/details', { state: { item } })}>
+                                    <ListItemAvatar>
+                                        <LocalGasStation sx={{ color: "red" }} />
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={ item.name }
+                                        secondary={ item.pantone_value }
+                                    />
+                                </ListItem>
+                            )
+                        })
                     }
                 </List>
             </StyledBox>
