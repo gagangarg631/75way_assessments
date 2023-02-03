@@ -9,7 +9,7 @@ import {
     Typography,
     Fade
 } from "@mui/material";
-import { Search, LocalGasStation } from "@mui/icons-material";
+import { Search, LocalGasStation, DriveEta } from "@mui/icons-material";
 import { allStations } from '../Services';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router";
@@ -104,7 +104,13 @@ const Stations = () => {
                             const { val, ind } = item.meta ? item.meta : {};
 
                             return (
-                                <ListItem key={ index } onClick={() => navigate('/details', { state: { item } })}>
+                                <ListItem sx={{
+                                    "&:hover": {
+                                        backgroundColor: 'gray',
+                                        color: 'white',
+                                        borderRadius: 10
+                                    }
+                                }} key={ index } onClick={() => navigate('/details', { state: { item } })}>
                                     <ListItemAvatar>
                                         <LocalGasStation sx={{ color: "red" }} />
                                     </ListItemAvatar>
@@ -119,6 +125,7 @@ const Stations = () => {
                                         }
                                         secondary={ item.pantone_value }
                                     />
+                                    <DriveEta />
                                 </ListItem>
                             )
                         })
