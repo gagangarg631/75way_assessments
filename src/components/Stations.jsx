@@ -64,9 +64,21 @@ const Stations = () => {
                             if (value === ""){
                                 setStations(storeStations);
                             }else{
-                                setStations(storeStations.filter(item => {
-                                    return item.name.toLowerCase().startsWith(value.toLowerCase());
-                                }))
+                                const searchedSt = [];
+                                storeStations.forEach((item, index) => {
+                                    let strInd = item.name.toLowerCase().indexOf(value.toLowerCase());
+                                    if (strInd !== -1) {
+                                        searchedSt.push({
+                                            ...item,
+                                            meta: {
+                                                val: value,
+                                                ind: strInd,
+                                            }
+                                        });
+                                    }
+                                });
+                                
+                                setStations(searchedSt);
                             }
                         }}
                         sx={{
@@ -89,6 +101,7 @@ const Stations = () => {
                         stations.map((item, index) => {
 
                             item.name = item.name.slice(0,1).toUpperCase() + item.name.slice(1);
+                            const { val, ind } = item.meta ? item.meta : {};
 
                             return (
                                 <ListItem key={ index } onClick={() => navigate('/details', { state: { item } })}>
@@ -96,7 +109,14 @@ const Stations = () => {
                                         <LocalGasStation sx={{ color: "red" }} />
                                     </ListItemAvatar>
                                     <ListItemText
-                                        primary={ item.name }
+                                        primary={ 
+                                            <>
+                                            <span>{ item.meta ? item.name.slice(0, ind) : "" }</span>
+                                            <span style={{ backgroundColor: '#C5C5C5' }}>{ item.meta ?  item.name.slice(ind, ind + val.length) : "" }</span>
+                                            <span>{ item.meta ? item.name.slice(ind + val.length) : "" }</span>
+                                            <Typography>{ !item.meta ? item.name : "" }</Typography>
+                                            </>
+                                        }
                                         secondary={ item.pantone_value }
                                     />
                                 </ListItem>
