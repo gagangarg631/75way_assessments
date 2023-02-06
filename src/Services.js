@@ -1,3 +1,5 @@
+import * as util from './util';
+
 const headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
@@ -21,6 +23,12 @@ const get = async (url) => {
 
 export const login = async (data) => {
     return await post('https://reqres.in/api/login', data);
+}
+
+export const logout = () => {
+    if (localStorage.getItem(util.TOKEN)) {
+      localStorage.removeItem(util.TOKEN);
+    }
 }
 
 export const allStations = async () => {

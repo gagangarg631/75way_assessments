@@ -19,9 +19,13 @@ const Login = ({ setAlert }) => {
   }
 
   useEffect(() => {
-    if (localStorage.getItem(util.TOKEN)) {
-      redirectWithDisclaimerCheck();
+    const login = () => {
+      if (localStorage.getItem(util.TOKEN)) {
+        redirectWithDisclaimerCheck();
+      }
     }
+
+    login();
   }, []);
 
   const handleLogin = async () => {
