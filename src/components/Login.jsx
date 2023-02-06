@@ -7,7 +7,6 @@ import StyledInput from './styles/StyledInput';
 import StyledLoginBox from './styles/StyledLoginBox';
 import * as util from '../util';
 import * as hp from '../helper';
-import AlertMessage from './Alert';
 
 const Login = ({ setAlert }) => {
 

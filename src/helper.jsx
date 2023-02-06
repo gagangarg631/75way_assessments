@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import * as util from './util';
 
 export const showAlert = ({ setAlert, status }) => {
@@ -24,7 +23,12 @@ export const showAlert = ({ setAlert, status }) => {
                 show: true,
             })
             break;
-        
+        default:
+            setAlert({
+                severity: "error",
+                message: "",
+                show: false,
+            });
     }
     setTimeout(() => hideAlert({setAlert}), 2000);
 }

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import StyledBox from './styles/StyledBox';
 import StyledButton from './styles/StyledButton';
 import * as util from '../util';
-import { showAlert } from '../helper';
 
 
 const Disclaimer = () => {
