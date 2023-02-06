@@ -1,6 +1,7 @@
 import * as util from './util';
 
 export const showAlert = ({ setAlert, status }) => {
+
     switch (status) {
         case util.SOMETHING_WRONG:
             setAlert({

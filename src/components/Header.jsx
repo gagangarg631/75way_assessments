@@ -2,9 +2,11 @@ import { Box, Typography } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../Services";
+import useAuth from "../Auth";
 
 const Header = ({ pageTitle, stopTimer, isBack }) => {
     const navigate = useNavigate();
+    const { setIsAuthenticated } = useAuth();
 
     return (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -24,8 +26,11 @@ const Header = ({ pageTitle, stopTimer, isBack }) => {
             </Typography>
             <Typography
                 onClick={() => {
-                    logout();
-                    navigate("/");
+                    const isLoggedOut = logout();
+                    setIsAuthenticated(false);
+                    if (isLoggedOut) {
+                        navigate("/");
+                    }
                 }}
                 sx={{
                     fontSize: 20,

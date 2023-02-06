@@ -7,11 +7,13 @@ import StyledInput from "./styles/StyledInput";
 import StyledLoginBox from "./styles/StyledLoginBox";
 import * as util from "../util";
 import * as hp from "../helper";
+import useAuth from '../Auth';
 
 const Login = ({ setAlert }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const { setIsAuthenticated } = useAuth();
 
     const redirectWithDisclaimerCheck = () => {
         localStorage.getItem(util.DISCLAIMER_ACCEPTED)
@@ -22,6 +24,7 @@ const Login = ({ setAlert }) => {
     useEffect(() => {
         const login = () => {
             if (localStorage.getItem(util.TOKEN)) {
+                setIsAuthenticated(true);
                 redirectWithDisclaimerCheck();
             }
         };
@@ -33,16 +36,14 @@ const Login = ({ setAlert }) => {
         const eml = email.toString().trim();
         const pass = password.toString().trim();
         if (eml !== "" && pass !== "") {
-            let res = await login({ email: eml, password: pass });
-            if (res.status === 200 && res.ok) {
-                res = await res.json();
-                if (res.hasOwnProperty("token")) {
-                    hp.showAlert({ setAlert, status: util.LOGIN_SUCCESSFUL });
-                    setTimeout(() => {
-                        localStorage.setItem(util.TOKEN, res.token);
-                        redirectWithDisclaimerCheck();
-                    }, 2000);
-                }
+            const isLogin = await login({ email: eml, password: pass });
+            setIsAuthenticated(true);
+            if (isLogin) {
+                hp.showAlert({ setAlert, status: util.LOGIN_SUCCESSFUL });
+                setTimeout(() => {
+                    redirectWithDisclaimerCheck();
+                }, 1000);
+                
             } else {
                 hp.showAlert({ setAlert, status: util.SOMETHING_WRONG });
                 setEmail("");

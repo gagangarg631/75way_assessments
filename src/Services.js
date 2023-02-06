@@ -21,13 +21,25 @@ const get = async (url) => {
 };
 
 export const login = async (data) => {
-    return await post("https://reqres.in/api/login", data);
+    let res = await post("https://reqres.in/api/login", data);
+
+    if (res.status === 200 && res.ok) {
+        res = await res.json();
+        if (res.hasOwnProperty("token")) {
+            localStorage.setItem(util.TOKEN, res.token);
+            return true;
+        }
+    } 
+
+    return false;
 };
 
 export const logout = () => {
     if (localStorage.getItem(util.TOKEN)) {
         localStorage.removeItem(util.TOKEN);
+        return true;
     }
+    return false;
 };
 
 export const station = async (method) => {
