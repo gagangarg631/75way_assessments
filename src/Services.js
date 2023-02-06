@@ -19,8 +19,8 @@ const get = async (url) => {
 }
 
 
-export const login = async (email, password) => {
-    return await post('https://reqres.in/api/login', {email, password});
+export const login = async (data) => {
+    return await post('https://reqres.in/api/login', data);
 }
 
 export const allStations = async () => {

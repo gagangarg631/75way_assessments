@@ -29,7 +29,7 @@ const Login = ({ setAlert }) => {
     const eml = email.toString().trim();
     const pass = password.toString().trim();
     if (eml !== "" && pass !== ""){
-      let res = await login(eml, pass);
+      let res = await login({ email: eml, password: pass });
       if (res.status === 200 && res.ok) {
         res = await res.json();
         if (res.hasOwnProperty('token')) {
