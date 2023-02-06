@@ -8,7 +8,14 @@ const post = async (url, data) => {
         method: 'post',
         headers,
         body: JSON.stringify(data),
-    }).then(res => res).catch(err => console.log(err));
+    }).then(res => res);
+}
+
+const get = async (url) => {
+    return fetch(url, {
+        method: 'get',
+        headers,
+    }).then(res => res);
 }
 
 
@@ -17,5 +24,5 @@ export const login = async (email, password) => {
 }
 
 export const allStations = async () => {
-    return fetch('https://reqres.in/api/unknown').then(res => res.json()).then(res => res);
+    return get('https://reqres.in/api/unknown').then(res => res.json()).then(res => res);
 }
