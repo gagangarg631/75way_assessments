@@ -1,7 +1,7 @@
 import Login from './components/Login';
 import Disclaimer from './components/Disclaimer';
-import Stations from './components/Stations';
-import Detail from './components/Detail';
+import Stations from './components/station/Stations';
+import Detail from './components/station/detail/Detail';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import AppContainer from './components/styles/StyledAppContainer';
 import { useState } from 'react';
