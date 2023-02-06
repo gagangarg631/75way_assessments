@@ -1,9 +1,10 @@
-import StyledBox from "./StyledBox";
+import StyledBox from './styles/StyledBox';
+import StyledSearchBox from './styles/StyledSearchBox';
+import StyledList from './styles/StyledList';
+import StyledListItem from './styles/StyledListItem';
 import {
     Box,
     Input,
-    List,
-    ListItem,
     ListItemAvatar,
     ListItemText,
     Typography,
@@ -13,6 +14,7 @@ import { Search, LocalGasStation, DriveEta } from "@mui/icons-material";
 import { allStations } from '../Services';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router";
+import Header from './Header';
 
 const Stations = () => {
     const [stations, setStations] = useState([]);
@@ -21,6 +23,30 @@ const Stations = () => {
     const [showStations, setShowStations] = useState(false);
 
     const [storeStations, setStoreStations] = useState([]);
+
+    const inputChange = (el) => {
+        let value = el.target.value;
+                            
+        if (value === ""){
+            setStations(storeStations);
+        }else{
+            const searchedSt = [];
+            storeStations.forEach((item, index) => {
+                let strInd = item.name.toLowerCase().indexOf(value.toLowerCase());
+                if (strInd !== -1) {
+                    searchedSt.push({
+                        ...item,
+                        meta: {
+                            val: value,
+                            ind: strInd,
+                        }
+                    });
+                }
+            });
+            
+            setStations(searchedSt);
+        }
+    }
 
     useEffect(() => {
         setTimeout(() => setShowStations(true), 500);
@@ -35,68 +61,24 @@ const Stations = () => {
 
     return (
         <Box variant="div" sx={{ paddingTop: 10 }}>
-            <Typography sx={{ 
-              fontSize: 20,
-              fontWeight: 500,
-              textAlign: 'center',
-             }}>Select Station</Typography>
+            <Header pageTitle="Select Station" />
             <StyledBox>
-                <Box
-                    mt={5}
-                    pl={1}
-                    bgcolor="#C5C5C5"
-                    sx={{
-                        height: 70,
-                        width: "90%",
-                        display: "flex",
-                        alignItems: "center",
-                        borderRadius: 2,
-                    }}
-                >
+                <StyledSearchBox>
                     <Search sx={{ color: '#808080' }}></Search>
                     <Input
                         disableUnderline
                         placeholder="Search by iD, Name, City"
                         fullWidth
-                        onChange={(el) => {
-                            let value = el.target.value;
-                            
-                            if (value === ""){
-                                setStations(storeStations);
-                            }else{
-                                const searchedSt = [];
-                                storeStations.forEach((item, index) => {
-                                    let strInd = item.name.toLowerCase().indexOf(value.toLowerCase());
-                                    if (strInd !== -1) {
-                                        searchedSt.push({
-                                            ...item,
-                                            meta: {
-                                                val: value,
-                                                ind: strInd,
-                                            }
-                                        });
-                                    }
-                                });
-                                
-                                setStations(searchedSt);
-                            }
-                        }}
+                        onChange={ inputChange }
                         sx={{
                             height: "100%",
                             paddingLeft: "10px",
                             fontSize: 18,
                         }}
                     />
-                </Box>
+                </StyledSearchBox>
                 <Fade in={showStations}>
-                <List
-                    sx={{
-                        width: "100%",
-                        bgcolor: "background.paper",
-                        height: "100%",
-                        overflow: "scroll",
-                    }}
-                >
+                <StyledList>
                     {
                         stations.map((item, index) => {
 
@@ -104,13 +86,10 @@ const Stations = () => {
                             const { val, ind } = item.meta ? item.meta : {};
 
                             return (
-                                <ListItem sx={{
-                                    "&:hover": {
-                                        backgroundColor: 'gray',
-                                        color: 'white',
-                                        borderRadius: 10
-                                    }
-                                }} key={ index } onClick={() => navigate('/details', { state: { item } })}>
+                                <StyledListItem 
+                                    key={ index } 
+                                    onClick={() => navigate('/details', { state: { item } })}
+                                >
                                     <ListItemAvatar>
                                         <LocalGasStation sx={{ color: "red" }} />
                                     </ListItemAvatar>
@@ -126,11 +105,11 @@ const Stations = () => {
                                         secondary={ item.pantone_value }
                                     />
                                     <DriveEta />
-                                </ListItem>
+                                </StyledListItem>
                             )
                         })
                     }
-                </List>
+                </StyledList>
                 </Fade>
             </StyledBox>
         </Box>

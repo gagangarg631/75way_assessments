@@ -1,14 +1,15 @@
 import { Box, Typography } from '@mui/material';
-import { ArrowBack } from '@mui/icons-material';
-import StyledBox from './StyledBox';
-import StyledButton from './StyledButton';
+import StyledBox from './styles/StyledBox';
+import StyledButton from './styles/StyledButton';
+import StyledDetailBox from './styles/StyledDetailBox';
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import Header from './Header';
+
 
 const Detail = () => {
   const [timer, setTimer] = useState(Math.ceil(Math.random() * 20));
   const [timerID, setTimerID] = useState();
-  const navigate = useNavigate();
   const location = useLocation();
   const [control, setControl] = useState("Stop");
 
@@ -30,21 +31,14 @@ const Detail = () => {
   return (
       <Box sx={{ paddingTop: 10 }}>
           <Box>
-            <ArrowBack onClick={() => {
-              stopTimer();
-              navigate(-1);
-            }} sx={{ position: 'absolute', left: 20 }} />
-            <Typography sx={{ 
-                fontSize: 20,
-                fontWeight: 'bold',
-                textAlign: 'center'
-              }}>Details</Typography>
+            <Header pageTitle="Details" stopTimer={ stopTimer } isBack={ true } />
           </Box>
           <StyledBox>
             <Box mt={5} sx={{ width: '100%' }}>
               <Typography sx={{ fontSize: 20, fontWeight: 500 }}>Station Subscribed</Typography>
             </Box>
-            <Box p={2} sx={{ position: 'relative', width: '90%', height: 140, margin: '10px 0', borderRadius: 2, boxShadow: 3, display: 'flex', alignItems: 'center' }}>
+
+            <StyledDetailBox>
               <Typography variant="p" sx={{ fontSize: 20, fontWeight: 500, textAlign: 'center', position: 'absolute', top: 5, right: 0, left: 0 }}>{ location.state.item.name }</Typography>
               <Box mt={3} sx={{ flex: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', height: '100%' }}>
                 <Typography sx={{ fontWeight: 500 }}>ACTIVE FROM</Typography>
@@ -62,7 +56,7 @@ const Detail = () => {
                 <StyledButton click={() => null} value={ control } />
               </Box>
               
-            </Box>
+              </StyledDetailBox>
           </StyledBox>
       </Box>
   )
