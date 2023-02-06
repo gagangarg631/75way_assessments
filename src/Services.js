@@ -8,7 +8,7 @@ const post = async (url, data) => {
         method: 'post',
         headers,
         body: JSON.stringify(data),
-    }).then(res => res);
+    }).then(res => res).catch(err => console.log(err));
 }
 
 

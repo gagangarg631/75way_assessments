@@ -1,16 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Input, Typography } from '@mui/material';
 import { ArrowRightAlt, Lock, Email } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../Services';
 import StyledInput from './styles/StyledInput';
 import StyledLoginBox from './styles/StyledLoginBox';
+import * as util from '../util';
+import * as hp from '../helper';
+import AlertMessage from './Alert';
 
-const Login = () => {
+const Login = ({ setAlert }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  const redirectWithDisclaimerCheck = () => {
+    localStorage.getItem(util.DISCLAIMER_ACCEPTED) ? navigate('/stations') : navigate('/disclaimer');
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem(util.TOKEN)) {
+      redirectWithDisclaimerCheck();
+    }
+  }, []);
 
   const handleLogin = async () => {
     const eml = email.toString().trim();
@@ -20,27 +33,23 @@ const Login = () => {
       if (res.status === 200 && res.ok) {
         res = await res.json();
         if (res.hasOwnProperty('token')) {
-          
-          // if first time, navigate to /disclaimer otherwise navigate to /stations
-          if (localStorage.getItem('station')) {
-            navigate('/stations');
-          }else {
-            localStorage.setItem('station', {
-              token: res.token,
-            })
-            navigate('/disclaimer');
-          }
-          
+          hp.showAlert({ setAlert, status: util.LOGIN_SUCCESSFUL })
+          setTimeout(() => {
+            localStorage.setItem(util.TOKEN, res.token);
+            redirectWithDisclaimerCheck();
+          }, 2000);
         }
       }else {
-        alert('Something Went Wrong');
+        hp.showAlert({ setAlert, status: util.SOMETHING_WRONG });
         setEmail("");
         setPassword("");
       }
       
+    } else {
+      hp.showAlert({ setAlert, status: util.MANDATORY_FIELDS_EMPTY });
     }
     
-  }
+  } 
 
   return (
     <StyledLoginBox>
@@ -49,11 +58,11 @@ const Login = () => {
 
        <StyledInput>
             <Email sx={{ color: 'red' }}></Email>
-           <Input onChange={el => setEmail(el.target.value)} fullWidth sx={{ height: '100%', pl: 2 }} disableUnderline placeholder="Enter your email" />
+           <Input onChange={el => setEmail(el.target.value)} value={ email } fullWidth sx={{ height: '100%', pl: 2 }} disableUnderline placeholder="Enter your email" />
        </StyledInput>
        <StyledInput>
            <Lock sx={{ color: 'red' }}></Lock>
-           <Input onChange={el => setPassword(el.target.value)} fullWidth sx={{ height: '100%', pl: 2 }} disableUnderline placeholder="Enter your password"></Input>
+           <Input onChange={el => setPassword(el.target.value)} value={ password } fullWidth sx={{ height: '100%', pl: 2 }} disableUnderline placeholder="Enter your password"></Input>
        </StyledInput>
        <Button 
        variant="contained" 

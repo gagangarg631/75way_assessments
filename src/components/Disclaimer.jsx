@@ -2,11 +2,17 @@ import { Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import StyledBox from './styles/StyledBox';
 import StyledButton from './styles/StyledButton';
-
+import * as util from '../util';
+import { showAlert } from '../helper';
 
 
 const Disclaimer = () => {
   const navigate = useNavigate();
+
+  const handleAccept = () => {
+    localStorage.setItem(util.DISCLAIMER_ACCEPTED, true);
+    navigate('/stations');
+  }
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -19,7 +25,7 @@ const Disclaimer = () => {
           Technology is the application of knowledge for achieving practical goals in a reproducible way.[1] The word technology can also mean the products resulting from such efforts,[2]: 117 [3] including both tangible tools such as utensils or machines
           </Typography>
 
-          <StyledButton sx={{height: '50px', marginTop: 5 }} click={() => navigate('/stations')} value="I accept" />
+          <StyledButton sx={{height: '50px', marginTop: 5 }} click={ handleAccept } value="I accept" />
         </StyledBox>
     </Box>
   )
